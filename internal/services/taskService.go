@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -120,6 +121,17 @@ func (t *TaskService) OptimiseTasks(ctx context.Context) ([]*models.TaskPriority
 	responseText := result.Text()
 	if err := json.Unmarshal([]byte(responseText), &priorityResults); err != nil {
 		return nil, fmt.Errorf("failed to parse AI response: %w", err)
+	}
+
+	// 7. Update the database
+	for _, res := range priorityResults {
+		// We only update the fields the AI calculated
+		err := t.TaskDB.UpdatePriority(ctx, res.ID, res.PriorityScore, res.Horizon)
+		if err != nil {
+			log.Printf("failed to update task %s: %v", res.ID, err)
+			// Decide if you want to continue or return error
+			continue
+		}
 	}
 
 	return priorityResults, nil

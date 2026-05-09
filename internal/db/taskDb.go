@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/platinumpizza29/go-chronos/internal/models"
@@ -66,5 +67,17 @@ func (t *TaskDB) Update(ctx context.Context, task *models.Task) error {
 func (t *TaskDB) Delete(ctx context.Context, id string) error {
 	query := `DELETE FROM tasks WHERE id = $1`
 	_, err := t.Pool.Exec(ctx, query, id)
+	return err
+}
+
+func (t *TaskDB) UpdatePriority(ctx context.Context, id string, score int, horizon int) error {
+	query := `
+		UPDATE tasks 
+		SET priority_score = $1, 
+		    horizon = $2, 
+		    updated_at = $3 
+		WHERE id = $4`
+
+	_, err := t.Pool.Exec(ctx, query, score, horizon, time.Now(), id)
 	return err
 }
