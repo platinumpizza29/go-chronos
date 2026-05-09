@@ -37,5 +37,5 @@ func main() {
 	}
 
 	// Define routes
-	router.Run(":8080")
+	router.Run()
 }
