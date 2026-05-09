@@ -6,16 +6,15 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/platinumpizza29/go-chronos/internal/db"
 	"github.com/platinumpizza29/go-chronos/internal/handlers"
 	"github.com/platinumpizza29/go-chronos/internal/services"
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
+	// if err := godotenv.Load(); err != nil {
+	// 	log.Fatalf("Error loading .env file: %v", err)
+	// }
 
 	dbUrl := os.Getenv("DATABASE_URL")
 
