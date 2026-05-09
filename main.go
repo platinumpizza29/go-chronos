@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/platinumpizza29/go-chronos/internal/db"
 	"github.com/platinumpizza29/go-chronos/internal/handlers"
@@ -27,6 +28,12 @@ func main() {
 	taskHandler := handlers.NewTasksHandler(taskService)
 
 	router := gin.Default()
+
+	// For development, allow all origins.
+	// For production, you should restrict this to your frontend's domain.
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+	}))
 
 	//define routes here
 	tasksRoutes := router.Group("/api/tasks")
