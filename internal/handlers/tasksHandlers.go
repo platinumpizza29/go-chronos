@@ -59,3 +59,22 @@ func (h *TasksHandler) OptimiseTasks(ctx *gin.Context) {
 
 	ctx.JSON(200, priorityResults)
 }
+
+// update the status of the task
+func (h *TasksHandler) UpdateStatus(ctx *gin.Context) {
+	var req models.TaskUpdateStatusRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		log.Printf("error decoding request body: %v", err)
+		ctx.JSON(400, gin.H{"error": "invalid request body"})
+		return
+	}
+
+	// add error handling for the task
+	if err := h.TaskService.UpdateStatus(ctx, req.TaskID, req.Status); err != nil {
+		log.Printf("error updating task status: %v", err)
+		ctx.JSON(500, gin.H{"error": "failed to update task status"})
+		return
+	}
+
+	ctx.JSON(200, gin.H{"message": "task status updated successfully"})
+}

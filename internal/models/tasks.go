@@ -28,3 +28,8 @@ type TaskPriorityResult struct {
 	PriorityScore int    `json:"priority_score"`
 	Horizon       int    `json:"horizon"`
 }
+
+type TaskUpdateStatusRequest struct {
+	TaskID string `json:"task_id"`
+	Status string `json:"status"`
+}

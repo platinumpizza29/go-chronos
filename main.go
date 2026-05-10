@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
 	"github.com/platinumpizza29/go-chronos/internal/db"
 	"github.com/platinumpizza29/go-chronos/internal/handlers"
 	"github.com/platinumpizza29/go-chronos/internal/services"
@@ -29,10 +30,11 @@ func main() {
 
 	router := gin.Default()
 
-	// For development, allow all origins.
-	// For production, you should restrict this to your frontend's domain.
 	router.Use(cors.New(cors.Config{
-		AllowAllOrigins: true,
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		AllowCredentials: false,
 	}))
 
 	//define routes here

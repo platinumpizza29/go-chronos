@@ -136,3 +136,13 @@ func (t *TaskService) OptimiseTasks(ctx context.Context) ([]*models.TaskPriority
 
 	return priorityResults, nil
 }
+
+// update the status of the task
+func (t *TaskService) UpdateStatus(ctx context.Context, taskID string, status string) error {
+	// add error handling for the task
+	err := t.TaskDB.UpdateStatus(ctx, taskID, status)
+	if err != nil {
+		return err
+	}
+	return nil
+}

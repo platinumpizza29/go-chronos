@@ -81,3 +81,15 @@ func (t *TaskDB) UpdatePriority(ctx context.Context, id string, score int, horiz
 	_, err := t.Pool.Exec(ctx, query, score, horizon, time.Now(), id)
 	return err
 }
+
+// update the status of the task
+func (t *TaskDB) UpdateStatus(ctx context.Context, id string, status string) error {
+	query := `
+		UPDATE tasks 
+		SET status = $1, 
+		    updated_at = $2 
+		WHERE id = $3`
+
+	_, err := t.Pool.Exec(ctx, query, status, time.Now(), id)
+	return err
+}
